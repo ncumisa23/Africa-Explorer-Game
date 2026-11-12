@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Africa Explorer: The Ultimate Map Challenge</title>
+<style>
+:root{--navy:#12304a;--teal:#087e8b;--gold:#f4b942;--cream:#fffaf0;--green:#2f855a}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#e6f4f1,#fff4d6);color:#172b3a}
+main{max-width:900px;margin:25px auto;padding:18px}.panel{background:white;border-radius:18px;padding:25px;box-shadow:0 8px 28px #12304a18}
+h1{color:var(--navy);margin:0 0 8px}.sub{color:#526575;margin-bottom:20px}.top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.stat{background:#eaf5f3;padding:10px 15px;border-radius:12px;font-weight:bold}.progress{height:10px;background:#e8edf0;border-radius:9px;overflow:hidden;margin:18px 0}.bar{height:100%;width:0;background:var(--teal);transition:width .3s}
+.tag{display:inline-block;background:#fff1c7;padding:6px 10px;border-radius:20px;font-size:13px;font-weight:bold;color:#694d00}
+.question{font-size:23px;font-weight:bold;line-height:1.35;margin:20px 0}.hint{color:#526575;margin-bottom:15px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answers button,.mainbtn{border:2px solid #d8e2e8;background:#fff;border-radius:12px;padding:14px;text-align:left;font-size:16px;cursor:pointer;color:#172b3a}
+.answers button:hover{border-color:var(--teal);background:#f0fbfa}.answers button:disabled{cursor:default;opacity:1}
+.answers button.correct{background:#e1f4e8;border-color:#2f855a}.answers button.wrong{background:#fde8e7;border-color:#c53030}
+.feedback{min-height:54px;margin:18px 0;font-weight:bold}.mainbtn{background:var(--navy);color:white;border:0;text-align:center;font-weight:bold;padding:13px 20px}.mainbtn:disabled{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.small{font-size:13px;color:#627381}.hidden{display:none}.mapbox{background:#f1f7f7;border-radius:14px;padding:14px;margin:14px 0}
+.mapbox svg{width:100%;height:auto;max-height:240px}.footer{margin-top:18px;font-size:12px;color:#718096}
+@media(max-width:600px){.answers{grid-template-columns:1fr}.question{font-size:20px}main{padding:10px}}
+</style>
+</head>
+<body><main>
+<section class="panel" id="intro">
+<div class="tag">INTERMEDIATE PHASE • GEOGRAPHY</div>
+<h1>🌍 Africa Explorer</h1>
+<p class="sub">The Ultimate Map Challenge</p>
+<p>Travel around Africa and test your map skills. Answer questions about countries, oceans, borders, capital cities, islands and the Equator. Earn points and complete all three levels!</p>
+<div class="mapbox">
+<svg viewBox="0 0 600 250" role="img" aria-label="Simple illustration showing Africa between the Atlantic and Indian Oceans">
+<rect width="600" height="250" rx="12" fill="#dff2f7"/>
+<text x="25" y="125" fill="#176b87" font-size="18" font-weight="bold">ATLANTIC</text><text x="25" y="148" fill="#176b87" font-size="18">OCEAN</text>
+<text x="465" y="125" fill="#176b87" font-size="18" font-weight="bold">INDIAN</text><text x="465" y="148" fill="#176b87" font-size="18">OCEAN</text>
+<path d="M285 20 L330 27 350 54 374 72 365 102 383 125 360 155 350 190 320 228 298 205 285 174 260 150 245 120 258 90 245 60 265 38Z" fill="#e5bd72" stroke="#9a6c2f" stroke-width="3"/>
+<path d="M392 178 Q420 185 415 218 Q395 231 385 207Z" fill="#e5bd72" stroke="#9a6c2f" stroke-width="2"/>
+<path d="M230 120 H385" stroke="#bd4a43" stroke-dasharray="7 5" stroke-width="2"/>
+<text x="388" y="114" font-size="12" fill="#9c3933">Equator</text>
+<text x="286" y="120" font-size="20" fill="#59421f" font-weight="bold">AFRICA</text>
+<text x="400" y="235" font-size="12" fill="#59421f">Madagascar</text>
+</svg>
+</div>
+<p><b>How to play:</b> Select the best answer. Correct answers earn 10 points. You may use the hint, but try to answer from what you have learned first.</p>
+<button class="mainbtn" onclick="startGame()">Start the adventure</button>
+</section>
+<section class="panel hidden" id="game">
+<div class="top"><div class="stat" id="level">Level 1</div><div class="stat">⭐ Score: <span id="score">0</span></div><div class="stat">Question <span id="number">1</span>/<span id="total">15</span></div></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="tag" id="topic">MAP SKILLS</div>
+<div class="question" id="question"></div><div class="hint" id="hint"></div>
+<div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div>
+<div class="row"><button class="mainbtn" id="next" onclick="nextQuestion()" disabled>Next question</button><button class="mainbtn" style="background:#087e8b" onclick="showHint()">Show hint</button></div>
+</section>
+<section class="panel hidden" id="end">
+<div class="tag">ADVENTURE COMPLETE</div><h1>🏆 Well done, Explorer!</h1>
+<p id="result" class="question"></p><p id="message"></p>
+<h3>What have you practised?</h3>
+<ul><li>Locating Africa and identifying surrounding oceans.</li><li>Recognising countries, borders and capital cities.</li><li>Classifying countries by coastline, region and the Equator.</li><li>Understanding Madagascar and Zanzibar.</li></ul>
+<button class="mainbtn" onclick="location.reload()">Play again</button>
+</section>
+<p class="footer">Designed for Grade 5 Intermediate Phase Geography, aligned with the CAPS topic “Africa our continent (oceans, countries and main cities)”.</p>
+</main>
+<script>
+const qs=[
+{l:1,t:"Position of Africa",q:"On which continent is South Africa located?",a:["Africa","Asia","Europe","South America"],c:0,h:"South Africa is at the southern end of this continent.",e:"South Africa is a country at the southern tip of Africa."},
+{l:1,t:"Oceans",q:"Which ocean lies to the east of Africa?",a:["Atlantic Ocean","Indian Ocean","Pacific Ocean","Arctic Ocean"],c:1,h:"It is between Africa and Australia.",e:"The Indian Ocean is east of Africa."},
+{l:1,t:"Oceans",q:"Which ocean lies to the west of Africa?",a:["Indian Ocean","Southern Ocean","Atlantic Ocean","Pacific Ocean"],c:2,h:"It is between Africa and the Americas.",e:"The Atlantic Ocean lies west of Africa."},
+{l:1,t:"Countries and borders",q:"What is a country border?",a:["A line separating countries","A type of mountain","The middle of an ocean","A capital city"],c:0,h:"It shows where one country ends and another begins.",e:"A border marks the boundary between two countries."},
+{l:1,t:"Capital cities",q:"What is the capital city of Kenya?",a:["Lagos","Nairobi","Cairo","Accra"],c:1,h:"It begins with N.",e:"Nairobi is the capital city of Kenya."},
+{l:2,t:"Landlocked or coastal",q:"Which of these African countries is landlocked?",a:["Mozambique","Ghana","Botswana","Somalia"],c:2,h:"It has no coastline and is surrounded by other countries.",e:"Botswana is landlocked because it has no coastline."},
+{l:2,t:"Landlocked or coastal",q:"Which country has a coastline on the Indian Ocean?",a:["Zimbabwe","Zambia","Malawi","Mozambique"],c:3,h:"It is on Africa’s south-eastern coast.",e:"Mozambique has a long coastline along the Indian Ocean."},
+{l:2,t:"Regions",q:"Which country is in North Africa?",a:["Egypt","Lesotho","Namibia","Botswana"],c:0,h:"The Nile River flows through this country.",e:"Egypt is in North Africa."},
+{l:2,t:"Regions",q:"Which country is in Southern Africa?",a:["Morocco","South Africa","Tunisia","Algeria"],c:1,h:"It is at the southern tip of the continent.",e:"South Africa is in the southern part of Africa."},
+{l:2,t:"Equator",q:"Which imaginary line crosses the middle of Africa?",a:["Tropic of Capricorn","Prime Meridian only","Equator","International Date Line"],c:2,h:"It divides Earth into the Northern and Southern Hemispheres.",e:"The Equator crosses several African countries, including Gabon, Republic of the Congo, Democratic Republic of the Congo, Uganda, Kenya and Somalia."},
+{l:3,t:"Islands",q:"Madagascar is best described as…",a:["A country and an island","A city in Kenya","A landlocked country","An ocean"],c:0,h:"It is a large island off the south-eastern coast of Africa.",e:"Madagascar is an island country in the Indian Ocean."},
+{l:3,t:"Islands",q:"Zanzibar is an island that belongs to which country?",a:["South Africa","Tanzania","Egypt","Nigeria"],c:1,h:"This East African country has a mainland and islands.",e:"Zanzibar is part of Tanzania."},
+{l:3,t:"Main cities",q:"Which African city is in Nigeria?",a:["Cairo","Nairobi","Lagos","Cape Town"],c:2,h:"It is a major city in West Africa.",e:"Lagos is a major city in Nigeria."},
+{l:3,t:"Main cities",q:"Cairo is a major city in which country?",a:["Egypt","Kenya","Angola","Senegal"],c:0,h:"This country is in North Africa.",e:"Cairo is a major city in Egypt."},
+{l:3,t:"Map thinking",q:"If a country has a coastline, what does this mean?",a:["It has no neighbours","It touches the sea or ocean","It is an island only","It has no capital city"],c:1,h:"Think about the edge of a country meeting the water.",e:"A coastal country has a boundary along a sea or ocean."}
+];
+let i=0,score=0,answered=false;
+function startGame(){document.getElementById('intro').classList.add('hidden');document.getElementById('game').classList.remove('hidden');document.getElementById('total').textContent=qs.length;render()}
+function render(){answered=false;let x=qs[i];document.getElementById('level').textContent='Level '+x.l;document.getElementById('score').textContent=score;document.getElementById('number').textContent=i+1;document.getElementById('bar').style.width=(i/qs.length*100)+'%';document.getElementById('topic').textContent=x.t.toUpperCase();document.getElementById('question').textContent=x.q;document.getElementById('hint').textContent='';document.getElementById('feedback').textContent='';document.getElementById('next').disabled=true;document.getElementById('next').textContent=i===qs.length-1?'See my result':'Next question';let box=document.getElementById('answers');box.innerHTML='';x.a.forEach((a,n)=>{let b=document.createElement('button');b.textContent=String.fromCharCode(65+n)+'. '+a;b.onclick=()=>choose(n);box.appendChild(b)})}
+function choose(n){if(answered)return;answered=true;let x=qs[i],bs=document.querySelectorAll('#answers button');bs.forEach((b,j)=>{b.disabled=true;if(j===x.c)b.classList.add('correct');if(j===n&&n!==x.c)b.classList.add('wrong')});if(n===x.c){score+=10;document.getElementById('feedback').textContent='✓ Correct! '+x.e}else{document.getElementById('feedback').textContent='Not quite. '+x.e}document.getElementById('score').textContent=score;document.getElementById('next').disabled=false}
+function showHint(){document.getElementById('hint').textContent='Hint: '+qs[i].h}
+function nextQuestion(){if(!answered)return;i++;if(i>=qs.length){document.getElementById('game').classList.add('hidden');document.getElementById('end').classList.remove('hidden');document.getElementById('bar').style.width='100%';document.getElementById('result').textContent='Your score: '+score+' out of '+(qs.length*10);document.getElementById('message').textContent=score>=120?'Excellent work! You are an Africa Explorer expert.':score>=80?'Good work! Review the questions you found difficult and try again.':'Keep practising! Use an atlas or map and play again to improve your score.'}else render()}
+</script></body></html>
